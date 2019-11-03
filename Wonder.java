@@ -45,7 +45,7 @@ public class Wonder {
 		}
 	}
 	public void build(Card c) {
-		//ebaads mom btw
+		//ebaads mom btw LOL!
 		Set<Card> yourmom = structures.get(c.getColor());
 		yourmom.add(c);
 	}
