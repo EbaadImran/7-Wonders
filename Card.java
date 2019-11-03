@@ -12,6 +12,14 @@ public class Card implements Comparable
 	public Card(String att)
 	{
 		String[] attArr = att.split("|");
+		age = Integer.parseInt(attArr[0]);
+		color = attArr[1];
+		name = attArr[2];
+		effect = attArr[3];
+		cost = attArr[4];
+		free = attArr[5];
+		chain1 = attArr[6];
+		chain2 = attArr[7];
 		
 	}
 	public int compareTo(Object oth)
@@ -32,3 +40,4 @@ public class Card implements Comparable
 	public String getChain1() {return chain1;}
 	public String getChain2() {return chain2;}
 }
+
