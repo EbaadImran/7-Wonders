@@ -1,0 +1,21 @@
+2|brown|sawmill|wood wood|coin|-|-|-
+2|brown|quarry|stone stone|coin|-|-|-
+2|brown|brickyard|clay clay|coin|-|-|-
+2|brown|foundry|ore ore|coin|-|-|-
+2|silver|loom|loom|-|-|-|-
+2|silver|glassworks|glass|-|-|-|-
+2|silver|press|papyrus|-|-|-|-
+2|blue|aqueduct|5|stone stone stone|baths|-|-
+2|blue|temple|3|wood clay glass|altar|pantheon|-
+2|blue|statue|4|ore ore wood|theater|gardens|-
+2|blue|courthouse|4|clay clay loom|scriptorium|-|-
+2|gold|forum|loom/glass/papyrus|clay clay|easttradingpost westtradingpost|haven|-
+2|gold|caravansery|clay/stone/ore/wood|wood wood|baths|marketplace|lighthouse
+2|gold|vineyard|all brown coin|-|-|-|-
+2|red|walls|2|silver silver silver|-|fortifications|-
+2|red|stables|2|ore clay wood|apothecary|-|-
+2|red|archeryrange|2|wood wood ore|workshop|-|-
+2|green|dispensary|sci1|ore ore glass|apothecary|lodge|arena
+2|green|laboratory|sci2|clay clay papyrus|workshop|observatory|siegeworkshop
+2|green|library|sci3|stone stone loom|scriptorium|senate|university
+2|green|school|sci3|wood papyrus|-|academy|study
