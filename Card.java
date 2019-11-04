@@ -1,10 +1,12 @@
+import java.util.HashMap;
+
 public class Card implements Comparable
 {
 	private int age;
 	private String color;
 	private String effect;
 	private String name;
-	private String cost;
+	private HashMap<String, Integer> cost;
 	private String free;
 	private String chain1;
 	private String chain2;
@@ -16,11 +18,17 @@ public class Card implements Comparable
 		color = attArr[1];
 		name = attArr[2];
 		effect = attArr[3];
-		cost = attArr[4];
+		cost = new HashMap<>();
 		free = attArr[5];
 		chain1 = attArr[6];
 		chain2 = attArr[7];
 		
+		String[] costs = attArr[4].split(" ");
+		for(int i = 0; i < costs.length; i++)
+		{
+			this.cost.putIfAbsent(costs[i], 0);
+			this.cost.put(costs[i], this.cost.get(costs[i]));
+		}
 	}
 	public int compareTo(Object oth)
 	{
@@ -35,9 +43,8 @@ public class Card implements Comparable
 	public String getColor() {return color;}
 	public String getEffect() {return effect;}
 	public String getName() {return name;}
-	public String getCost() {return cost;}
+	public HashMap getCost() {return cost;}
 	public String getFree() {return free;}
 	public String getChain1() {return chain1;}
 	public String getChain2() {return chain2;}
 }
-
