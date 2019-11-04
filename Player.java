@@ -69,7 +69,7 @@ public class Player {
 					return false;
 			}
 		}
-		//still need to write if player has enough resources;
+		//still need to write if player has enough resources
 	}
 	public void setHand(ArrayList<Card> eshaimran)
 	{
