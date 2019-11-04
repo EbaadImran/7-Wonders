@@ -51,7 +51,7 @@ public class Card implements Comparable
 	public String getColor() {return color;}
 	public String getEffect() {return effect;}
 	public String getName() {return name;}
-	public HashMap getCost() {return cost;}
+	public HashMap<String, Integer> getCost() {return cost;}
 	public String getFree() {return free;}
 	public String getChain1() {return chain1;}
 	public String getChain2() {return chain2;}
