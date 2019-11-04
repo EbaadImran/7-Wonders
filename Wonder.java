@@ -1,14 +1,14 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Wonder {
 	private String[] attributes;
 	private Card[] stages;
 	private HashMap<String, Integer> usableRes;
 	private HashSet<String> tradableRes;
-	private HashMap<String, HashSet<Card>> structures;
+	private HashMap<String, TreeSet<Card>> structures;
 	public Wonder(String att) {
 		//name|res|cost1|cost2|cost3|stage1|stage2|stage3
 		attributes = att.split("|");
@@ -17,13 +17,13 @@ public class Wonder {
 		tradableRes = new HashSet<>();
 		structures = new HashMap<>();
 		
-		structures.put("brown", new HashSet<>());
-		structures.put("silver", new HashSet<>());
-		structures.put("blue", new HashSet<>());
-		structures.put("gold", new HashSet<>());
-		structures.put("red", new HashSet<>());
-		structures.put("green", new HashSet<>());
-		structures.put("purple", new HashSet<>());
+		structures.put("brown", new TreeSet<>());
+		structures.put("silver", new TreeSet<>());
+		structures.put("blue", new TreeSet<>());
+		structures.put("gold", new TreeSet<>());
+		structures.put("red", new TreeSet<>());
+		structures.put("green", new TreeSet<>());
+		structures.put("purple", new TreeSet<>());
 		
 		usableRes.put("wood", 0);
 		usableRes.put("stone", 0);
@@ -76,9 +76,17 @@ public class Wonder {
 	{
 		return attributes[7];
 	}
-	public HashSet<Card> getStructure(String color)
+	public TreeSet<Card> getStructure(String color)
 	{
 		return structures.get(color);
+	}
+	public boolean hasStructure(String oth)
+	{
+		for(String k : structures.keySet())
+			for(Card c : structures.get(k))
+				if(c.getName() == oth)
+					return true;
+		return false;
 	}
 	public void activate(Card oth)
 	{
@@ -93,7 +101,7 @@ public class Wonder {
 	}
 	public void build(Card c) {
 		//ebaads mom btw LOL!
-		HashSet<Card> yourmom = structures.get(c.getColor());
+		TreeSet<Card> yourmom = structures.get(c.getColor());
 		yourmom.add(c);
 	}
 }
