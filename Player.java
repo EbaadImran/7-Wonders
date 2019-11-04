@@ -7,20 +7,26 @@ public class Player {
 	Wonder w;
 	int coins;
 	ArrayList<Card> hand;
-	Map<String, Integer> points;
-	Map<String, Set<String>> oneCostRes;
+	HashMap<Integer, Integer> points;
+	HashMap<String, Set<String>> oneCostRes;
 	public Player(String att)
 	{
 		w = new Wonder(att);
 		hand = new ArrayList<>();
 		coins = 3;
 		oneCostRes = new HashMap<>();
+		points = new HashMap<>();
+		
+		points.put(-1, 0);
+		points.put(1, 0);
+		points.put(3, 0);
+		points.put(5, 0);
 	}
 	public void addCoins(int i)
 	{
 		coins = coins + i;
 	}
-	public void addPoints(String name, int num)
+	public void addPoints(int name, int num)
 	{
 		//https://www.youtube.com/watch?v=b2qsRX4B_Kk pls watch LOL!!!!!!
 		int epic = points.get(name);
@@ -34,7 +40,7 @@ public class Player {
 	{
 		return hand;
 	}
-	public Map<String, Integer> getPoints()
+	public HashMap<Integer, Integer> getPoints()
 	{
 		return points;
 	}
@@ -53,23 +59,20 @@ public class Player {
 	}
 	public boolean playable(Card oth)
 	{
-		//he's so big LOL
-		String bigboberts = oth.getName();
-		Set<String> keys = w.getStructureKeys();
-		for(String colors:keys)
-		{
-			for(Card c:w.getStructure(colors))
-			{
-				if(c.getName().equals("forum"))
-					if(c.getFree().contains(oth.getName()))
-						return true;
-				else if(c.getFree().equals(bigboberts))
-					return true;
-				else if(c.getName().equals(bigboberts))
-					return false;
-			}
-		}
-		//still need to write if player has enough resources
+		if(w.hasStructure(oth.getName()))
+			return false;
+		
+		boolean byCost = true;
+		for(String k : oth.getCost().keySet())
+			if(w.getUsableRes(k) < oth.getCost().get(k))
+				byCost = false;
+		if(byCost)
+			return true;
+		
+		if(w.hasStructure(oth.getFree()))
+			return true;
+		
+		return false;
 	}
 	public void setHand(ArrayList<Card> eshaimran)
 	{
