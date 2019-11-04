@@ -3,7 +3,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Player {
+public class Player 
+{
+	int turn;
 	Wonder w;
 	int coins;
 	ArrayList<Card> hand;
@@ -11,8 +13,9 @@ public class Player {
 	HashMap<String, Set<String>> oneCostRes;
 	int mPower;
 	HashMap<String, Integer> sci;
-	public Player(String att)
+	public Player(String att, int t)
 	{
+		turn = t;
 		w = new Wonder(att);
 		hand = new ArrayList<>();
 		coins = 3;
@@ -20,6 +23,7 @@ public class Player {
 		points = new HashMap<>();
 		mPower = 0;
 		sci = new HashMap<>();
+		
 		sci.put("sci1", 0);
 		sci.put("sci2", 0);
 		sci.put("sci3", 0);
@@ -51,15 +55,25 @@ public class Player {
 	{
 		return points;
 	}
+	public int getColorAmt(String color)
+	{
+		return w.getStructure(color).size();
+	}
+	public int getNegs()
+	{
+		return points.get(-1);
+	}
 	public int[] getScore()
 	{
 		int[] total = new int[7];
 		//military
 		total[0] += (-1*points.get(-1)) + (points.get(1)) + (3*points.get(3)) + (5*points.get(5));
 		//coins
-		
+		total[1] += coins/3;
 		//wonder
-		
+		Card[] cards = w.getStages();
+		total[2] += (cards[0] != null) ? 3:0;
+		total[2] += (cards[2] != null) ? 7:0;
 		//civic
 		for(Card c : w.getStructure("blue"))
 			total[3] += Integer.parseInt(c.getEffect());
