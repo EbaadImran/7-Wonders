@@ -5,17 +5,47 @@ import java.util.Set;
 
 public class Wonder {
 	private String[] attributes;
-	private Card[] stages = new Card[3];
-	private ArrayList<String> res = new ArrayList<String>();
-	private Map<String, Set<Card>> structures = new HashMap<>();
+	private Card[] stages;
+	private ArrayList<String> usableRes;
+	private ArrayList<String> tradableRes;
+	private HashMap<String, Set<Card>> structures;
 	public Wonder(String att) {
 		//name|res|cost1|cost2|cost3|stage1|stage2|stage3
 		attributes = att.split("|");
-		res.add(attributes[1]);
+		stages = new Card[3];
+		usableRes = new ArrayList<>();
+		tradableRes = new ArrayList<>();
+		structures = new HashMap<>();
+		usableRes.add(attributes[1]);
+		tradableRes.add(attributes[1]);
 	}
-	public ArrayList<String> getRes()
+	public void addUsable(String res)
 	{
-		return res;
+		usableRes.add(res);
+	}
+	public void addTradable(String res)
+	{
+		tradableRes.add(res);
+	}
+	public ArrayList<String> getUsableRes()
+	{
+		return usableRes;
+	}
+	public ArrayList<String> getTradableRes()
+	{
+		return tradableRes;
+	}
+	public String getCost1()
+	{
+		return attributes[2];
+	}
+	public String getCost2()
+	{
+		return attributes[3];
+	}
+	public String getCost3()
+	{
+		return attributes[4];
 	}
 	public String getStage1()
 	{
