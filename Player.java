@@ -9,6 +9,8 @@ public class Player {
 	ArrayList<Card> hand;
 	HashMap<Integer, Integer> points;
 	HashMap<String, Set<String>> oneCostRes;
+	int mPower;
+	HashMap<String, Integer> sci;
 	public Player(String att)
 	{
 		w = new Wonder(att);
@@ -16,6 +18,11 @@ public class Player {
 		coins = 3;
 		oneCostRes = new HashMap<>();
 		points = new HashMap<>();
+		mPower = 0;
+		sci = new HashMap<>();
+		sci.put("sci1", 0);
+		sci.put("sci2", 0);
+		sci.put("sci3", 0);
 		
 		points.put(-1, 0);
 		points.put(1, 0);
@@ -44,9 +51,26 @@ public class Player {
 	{
 		return points;
 	}
-	public int getScore()
+	public int[] getScore()
 	{
-		return 0;
+		int[] total = new int[7];
+		//military
+		total[0] += (-1*points.get(-1)) + (points.get(1)) + (3*points.get(3)) + (5*points.get(5));
+		//coins
+		
+		//wonder
+		
+		//civic
+		for(Card c : w.getStructure("blue"))
+			total[3] += Integer.parseInt(c.getEffect());
+		//commercial
+		
+		//guilds
+		
+		//science
+		total[6] += 7 * (Math.min(sci.get("sci1"), Math.min(sci.get("sci2"), sci.get("sci3"))));
+		total[6] += Math.pow(sci.get("sci1"), 2) + Math.pow(sci.get("sci2"), 2) + Math.pow(sci.get("sci3"), 2);
+		return total;
 	}
 	public Wonder getWonder()
 	{
