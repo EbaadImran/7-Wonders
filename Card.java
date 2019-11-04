@@ -26,8 +26,11 @@ public class Card implements Comparable
 		String[] costs = attArr[4].split(" ");
 		for(int i = 0; i < costs.length; i++)
 		{
-			this.cost.putIfAbsent(costs[i], 0);
-			this.cost.put(costs[i], this.cost.get(costs[i]));
+			if(!costs[i].equals("-"))
+			{
+				this.cost.putIfAbsent(costs[i], 0);
+				this.cost.put(costs[i], this.cost.get(costs[i]));
+			}
 		}
 	}
 	public int compareTo(Object oth)
@@ -38,6 +41,11 @@ public class Card implements Comparable
 		else if(color.equals(temp.color))
 			return age - temp.age;
 		return color.compareTo(temp.color);
+	}
+	public boolean equals(Object oth) 
+	{
+		Card temp = (Card) oth;
+		return name.equals(temp.name);
 	}
 	public int getAge() {return age;}
 	public String getColor() {return color;}
