@@ -51,3 +51,4 @@ public class Deck
 	public void discard(Card c) {discard.get(c.getAge()).add(c);}
 	public ArrayList<Card> getDiscard(int age) {return discard.get(age);}
 }
+
