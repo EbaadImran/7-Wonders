@@ -33,36 +33,18 @@ public class Player
 		points.put(3, 0);
 		points.put(5, 0);
 	}
-	public void addCoins(int i)
-	{
-		coins = coins + i;
-	}
+	public void addCoins(int i) { coins = coins + i; }
 	public void addPoints(int name, int num)
 	{
 		//https://www.youtube.com/watch?v=b2qsRX4B_Kk pls watch LOL!!!!!!
 		int epic = points.get(name);
 		points.put(name, epic + num);
 	}
-	public int getCoins()
-	{
-		return coins;
-	}
-	public ArrayList<Card> getHand()
-	{
-		return hand;
-	}
-	public HashMap<Integer, Integer> getPoints()
-	{
-		return points;
-	}
-	public int getColorAmt(String color)
-	{
-		return w.getStructure(color).size();
-	}
-	public int getNegs()
-	{
-		return points.get(-1);
-	}
+	public int getCoins() { return coins; }
+	public ArrayList<Card> getHand() { return hand; }
+	public HashMap<Integer, Integer> getPoints() { return points; }
+	public int getColorAmt(String color) { return w.getStructure(color).size(); }
+	public int getNegs() { return points.get(-1); }
 	public int[] getScore()
 	{
 		int[] total = new int[7];
@@ -86,10 +68,7 @@ public class Player
 		total[6] += Math.pow(sci.get("sci1"), 2) + Math.pow(sci.get("sci2"), 2) + Math.pow(sci.get("sci3"), 2);
 		return total;
 	}
-	public Wonder getWonder()
-	{
-		return w;
-	}
+	public Wonder getWonder() { return w; }
 	public void playCard(int joshleisajoke)
 	{
 		//Josh Le got Iss for going to In-and-Out, he basically is the biggest monkey alive ginga gunga ginga gunga
@@ -112,8 +91,5 @@ public class Player
 		
 		return false;
 	}
-	public void setHand(ArrayList<Card> eshaimran)
-	{
-		hand = eshaimran;
-	}
+	public void setHand(ArrayList<Card> eshaimran) { hand = eshaimran; }
 }
