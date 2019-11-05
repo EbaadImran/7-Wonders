@@ -3,13 +3,9 @@ import java.util.HashMap;
 public class Card implements Comparable
 {
 	private int age;
-	private String color;
-	private String effect;
-	private String name;
+	private String color, effect, name;
 	private HashMap<String, Integer> cost;
-	private String free;
-	private String chain1;
-	private String chain2;
+	private String free, chain1, chain2;
 	
 	public Card(String att)
 	{
@@ -47,12 +43,12 @@ public class Card implements Comparable
 		Card temp = (Card) oth;
 		return name.equals(temp.name);
 	}
-	public int getAge() {return age;}
-	public String getColor() {return color;}
-	public String getEffect() {return effect;}
-	public String getName() {return name;}
-	public HashMap<String, Integer> getCost() {return cost;}
-	public String getFree() {return free;}
-	public String getChain1() {return chain1;}
-	public String getChain2() {return chain2;}
+	public int getAge() { return age; }
+	public String getColor() { return color; }
+	public String getEffect() { return effect; }
+	public String getName() { return name; }
+	public HashMap<String, Integer> getCost() { return cost; }
+	public String getFree() { return free;}
+	public String getChain1() { return chain1; }
+	public String getChain2() { return chain2; }
 }
