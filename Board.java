@@ -23,21 +23,9 @@ public class Board
 		for(int i = 0; i < players.length; i++)
 			players[i] = new Player(wonds.remove((int) (Math.random()*wonds.size())), i);
 	}
-	public void setAge1()
-	{
-		age = 1;
-		deal();
-	}
-	public void setAge2()
-	{
-		age = 2;
-		deal();
-	}
-	public void setAge3()
-	{
-		age = 3;
-		deal();
-	}
+	public void setAge1() { age = 1; deal(); }
+	public void setAge2() { age = 2; deal(); }
+	public void setAge3() { age = 3; deal(); }
 	public void deal()
 	{
 		ArrayList<Card> hand1 = new ArrayList<>();
