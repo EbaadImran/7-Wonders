@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -12,13 +14,15 @@ import javax.swing.Timer;
 
 public class WondersGraphics extends JPanel implements ActionListener{
 	
-	private BufferedImage bg, logo, hali;
+	private BufferedImage bg, logo;
 	private boolean isTitleScreen, isPlayScreen, isWinScreen;
 	private int y, yVel;
 	private Timer tm;
+	private ArrayList<Object> gs; 
 	
 	public WondersGraphics()
 	{
+		gs = new ArrayList<Object>();
 		setSize(1920, 1080);
 		isTitleScreen = true;
 		isPlayScreen = false;
@@ -29,7 +33,6 @@ public class WondersGraphics extends JPanel implements ActionListener{
 		try {
 			bg = ImageIO.read(getClass().getResource("bg.jpg"));
 			logo = ImageIO.read(getClass().getResource("logo.png"));
-			hali = ImageIO.read(getClass().getResource("hali.png"));
 		}
 		catch(IOException e)
 		{
@@ -62,6 +65,11 @@ public class WondersGraphics extends JPanel implements ActionListener{
 			yVel = -yVel;
 		}
 		y = y + yVel;
+		repaint();
+	}
+	public void setGS(ArrayList<Object> gs)
+	{
+		this.gs = gs;
 		repaint();
 	}
 	public boolean getIsTitleScreen()
