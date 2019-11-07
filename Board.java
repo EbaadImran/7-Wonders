@@ -10,8 +10,9 @@ public class Board
 	private Deck deck;
 	private Player[] players;
 	
-	public Board(int amt) throws IOException
+	public Board() throws IOException
 	{
+		age = 1;
 		deck = new Deck();
 		
 		ArrayList<String> wonds = new ArrayList<>();
@@ -19,14 +20,19 @@ public class Board
 		while(scan.hasNext())
 			wonds.add(scan.nextLine());
 		
-		players = new Player[amt];
+		players = new Player[3];
 		for(int i = 0; i < players.length; i++)
 			players[i] = new Player(wonds.remove((int) (Math.random()*wonds.size())), i);
 	}
-	//STOP FUCKING DOING THIS PRUDHVI
-	public void setAge1() { age = 1; deal(); }
-	public void setAge2() { age = 2; deal(); }
-	public void setAge3() { age = 3; deal(); }
+	public int nextTurn()
+	{
+		turn = (turn+1) % 4;
+		return turn;
+	}
+	public void nextAge()
+	{
+		age = age + 1;
+	}
 	public void deal()
 	{
 		ArrayList<Card> hand1 = new ArrayList<>();
@@ -65,5 +71,14 @@ public class Board
 		for(int i = 0; i < 3; i++)
 			points[i] = players[i].getScore();
 		return points;
+	}
+	public ArrayList<Object> getGameState()
+	{
+		ArrayList<Object> gs = new ArrayList<Object>();
+		gs.add(players);
+		gs.add((Integer) age);
+		gs.add((Integer) turn);
+		
+		return gs;
 	}
 }
