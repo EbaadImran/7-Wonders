@@ -1,24 +1,35 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class WondersGraphics extends JPanel{
+public class WondersGraphics extends JPanel implements ActionListener{
 	
-	private BufferedImage bg, logo;
-	private boolean isTitleScreen;
+	private BufferedImage bg, logo, hali;
+	private boolean isTitleScreen, isPlayScreen, isWinScreen;
+	private int y, yVel;
+	private Timer tm;
 	
 	public WondersGraphics()
 	{
 		setSize(1920, 1080);
 		isTitleScreen = true;
+		isPlayScreen = false;
+		isWinScreen = false;
+		tm = new Timer(38, this);
+		y = 1080/2 + 30;
+		yVel = 1;
 		try {
 			bg = ImageIO.read(getClass().getResource("bg.jpg"));
 			logo = ImageIO.read(getClass().getResource("logo.png"));
+			hali = ImageIO.read(getClass().getResource("hali.png"));
 		}
 		catch(IOException e)
 		{
@@ -28,17 +39,38 @@ public class WondersGraphics extends JPanel{
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		g.drawImage(bg, 0, 0, 1920, 1080, null);
-		g.drawImage(logo, 1695, -55, 225, 200, null);
 		if(isTitleScreen)
 		{
-			g.setColor(Color.RED);
-			g.setFont(new Font("default", Font.BOLD, 30));
-			g.drawString("CLICK TO PLAY", 1920/2 - 100, 1080/2 + 30);
+			g.drawImage(bg, 0, 0, 1920, 1080, null);
+			g.drawImage(logo, 1920/2 - 295, 1080/2 - 310, 570, 460, null);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("default", Font.BOLD, 27));
+			g.drawString("CLICK TO PLAY", 1920/2 - 120, y);
+			tm.start();
 		}
-		else
+		else if(isPlayScreen)
 		{
-			
+			g.drawImage(bg, 0, 0, 1920, 1080, null);
+			g.drawImage(logo, 1695, -50, 225, 200, null);
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if (y < 550 || y > 575)
+		{
+			yVel = -yVel;
+		}
+		y = y + yVel;
+		repaint();
+	}
+	public boolean getIsTitleScreen()
+	{
+		return isTitleScreen;
+	}
+	public void turnOffTitleScreen()
+	{
+		isTitleScreen = false;
+		isPlayScreen = true;
 	}
 }
