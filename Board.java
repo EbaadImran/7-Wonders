@@ -23,6 +23,7 @@ public class Board
 		for(int i = 0; i < players.length; i++)
 			players[i] = new Player(wonds.remove((int) (Math.random()*wonds.size())), i);
 	}
+	//STOP FUCKING DOING THIS PRUDHVI
 	public void setAge1() { age = 1; deal(); }
 	public void setAge2() { age = 2; deal(); }
 	public void setAge3() { age = 3; deal(); }
