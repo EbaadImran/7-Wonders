@@ -33,6 +33,40 @@ public class Board
 	{
 		age = age + 1;
 	}
+	public void doAction(String a, int i)
+	{
+		if(a.equals("build"))
+			players[turn].playCard(i);
+		else if(a.equals("wonder"))
+			players[turn].buildWonder(i);
+		else if(a.equals("discard"))
+			deck.discard(players[turn].discard(i));
+	}
+	public void doEffect(String eff)
+	{
+		String[] parts = eff.split(" ");
+		int total = 0;
+		//left and right coins
+		if(parts[0].equals("all"))
+		{
+			if(parts[1].equals("brown"))
+				total += players[0].getColorAmt("brown") + players[1].getColorAmt("brown") + players[2].getColorAmt("brown");
+			else if(parts[1].equals("silver"))
+				total += (players[0].getColorAmt("silver") + players[1].getColorAmt("silver") + players[2].getColorAmt("silver")) * 2;
+		}
+		else if(parts[0].equals("self"))
+		{
+			if(parts[1].equals("wonder"))
+				total += 3*(players[turn].getWonderAmt());
+			else if(parts[1].equals("brown"))
+				total += players[turn].getColorAmt("brown");
+			else if(parts[1].equals("silver"))
+				total += players[turn].getColorAmt("silver") * 2;
+			else if(parts[1].equals("gold"))
+				total += players[turn].getColorAmt("gold");
+		}
+		players[turn].addCoins(total);
+	}
 	public void deal()
 	{
 		ArrayList<Card> hand1 = new ArrayList<>();
