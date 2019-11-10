@@ -3,24 +3,22 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class WondersGraphics extends JPanel implements ActionListener{
+public class WonderGraphics extends JPanel implements ActionListener{
 	
-	private BufferedImage bg, logo, arrow;
+	private ImageIcon bg, logo, arrow;
 	private boolean isTitleScreen, isPlayScreen, isWinScreen;
 	private int y, yVel, turn; //this turn is for the arrow, don't want to mess up the actual turn
 	private Timer tm;
 	private ArrayList<Object> gs; 
 	
-	public WondersGraphics()
+	public WonderGraphics()
 	{
 		turn = 1;
 		gs = new ArrayList<Object>();
@@ -32,11 +30,11 @@ public class WondersGraphics extends JPanel implements ActionListener{
 		y = 1080/2 + 30;
 		yVel = 1;
 		try {
-			bg = ImageIO.read(getClass().getResource("bg.jpg"));
-			logo = ImageIO.read(getClass().getResource("logo.png"));
-			arrow = ImageIO.read(getClass().getResource("chevron.png"));
+			bg = new ImageIcon("bg.jpg");
+			logo = new ImageIcon("logo.png");
+			arrow = new ImageIcon("chevron.png");
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			System.out.println("Error");
 		}
@@ -46,8 +44,8 @@ public class WondersGraphics extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		if(isTitleScreen)
 		{
-			g.drawImage(bg, 0, 0, 1920, 1080, null);
-			g.drawImage(logo, 1920/2 - 295, 1080/2 - 310, 570, 460, null);
+			g.drawImage(bg.getImage(), 0, 0, 1920, 1080, null);
+			g.drawImage(logo.getImage(), 1920/2 - 295, 1080/2 - 310, 570, 460, null);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("default", Font.BOLD, 27));
 			g.drawString("CLICK TO PLAY", 1920/2 - 120, y);
@@ -55,10 +53,10 @@ public class WondersGraphics extends JPanel implements ActionListener{
 		}
 		else if(isPlayScreen)
 		{
-			g.drawImage(bg, 0, 0, 1920, 1080, null);
-			g.drawImage(logo, 1695, -50, 225, 200, null);
-			g.drawImage(arrow, 512/4, 1080 - (512/3), -1*(512/4), 512/4, null);
-			g.drawImage(arrow, 129, 1080 - (512/3), 512/4, 512/4, null);
+			g.drawImage(bg.getImage(), 0, 0, 1920, 1080, null);
+			g.drawImage(logo.getImage(), 1695, -50, 225, 200, null);
+			g.drawImage(arrow.getImage(), 512/4, 1080 - (512/3), -1*(512/4), 512/4, null);
+			g.drawImage(arrow.getImage(), 129, 1080 - (512/3), 512/4, 512/4, null);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("default", Font.BOLD, 27));
 			g.drawString(turn+"", 1920/2, 1080/2);
