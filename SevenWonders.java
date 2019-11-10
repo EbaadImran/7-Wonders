@@ -1,35 +1,34 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.swing.JFrame;
 
 public class SevenWonders extends JFrame
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		new SevenWonders();
 	}
 	private Board b;
-	WondersGraphics panel;
-	public SevenWonders()
+	private WonderGraphics panel;
+	
+	public SevenWonders() throws IOException
 	{
-		/*try {
-			b = new Board();
-		}
-		catch(IOException e)
-		{
-			System.out.println("Error");
-		}*/
+		b = new Board();
 		setUpGraphics();
+		play();
+	}
+	public void play()
+	{
+		b.nextAge();
+		b.deal();
 	}
 	public void setUpGraphics()
 	{
 		setSize(1920, 1080);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel = new WondersGraphics();
+		panel = new WonderGraphics();
 		add(panel);
 		this.addMouseListener(new MouseAdapter()
 		{
