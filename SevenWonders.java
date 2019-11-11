@@ -17,12 +17,13 @@ public class SevenWonders extends JFrame
 	{
 		b = new Board();
 		setUpGraphics();
-		play();
+		startAge();
 	}
-	public void play()
+	public void startAge()
 	{
 		b.nextAge();
 		b.deal();
+		updateGame();
 	}
 	public void setUpGraphics()
 	{
