@@ -1,0 +1,7 @@
+alexandriaA|glass|stone stone|ore ore|glass glass|v v v|clay/ore/wood/stone|v v v v v v v
+babylonA|clay|clay clay|wood wood wood|clay clay clay clay|v v v|sci1/sci2/sci3|v v v v v v v
+ephesosA|papyrus|stone stone|wood wood|papyrus papyrus|v v v|coin coin coin coin coin coin coin coin coin|v v v v v v v
+gizahA|stone|stone stone|wood wood wood|papyrus papyrus|v v v|coin coin coin coin coin coin coin coin coin|v v v v v v v
+halikarnassosA|loom|clay clay|ore ore ore|loom loom|v v v|freedisc|v v v v v v v
+olympiaA|wood|wood wood|stone stone|ore ore|v v v|free|v v v v v v v
+rhodosA|ore|wood wood|clay clay clay|ore ore ore ore|v v v|m m|v v v v v v v
