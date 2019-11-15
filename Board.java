@@ -7,12 +7,14 @@ public class Board
 {
 	private int age;
 	private int turn;
+	private int round;
 	private Deck deck;
 	private Player[] players;
 	
 	public Board() throws IOException
 	{
-		age = 1;
+		age = 0;
+		round = 0;
 		deck = new Deck();
 		
 		ArrayList<String> wonds = new ArrayList<>();
@@ -24,14 +26,32 @@ public class Board
 		for(int i = 0; i < players.length; i++)
 			players[i] = new Player(wonds.remove((int) (Math.random()*wonds.size())), i);
 	}
+	public int getTurn()
+	{
+		return turn;
+	}
+	public int getAge()
+	{
+		return age;
+	}
+	public int getRound()
+	{
+		return round;
+	}
 	public int nextTurn()
 	{
-		turn = (turn+1) % 4;
+		turn = (turn+1) % 3;
+		round += 1;
 		return turn;
 	}
 	public void nextAge()
 	{
 		age = age + 1;
+		turn = 0;
+	}
+	public void chooseResource(int i, int choice)
+	{
+		players[turn].getWonder().removeRes(i, choice);
 	}
 	public void doAction(String a, int i)
 	{
@@ -99,11 +119,28 @@ public class Board
 			players[2].setHand(temp);
 		}
 	}
+	public void trade(int oth, String res)
+	{
+		if(players[turn].getOneCost().get(oth).contains(res))
+		{
+			players[turn].addCoins(-1);
+			players[oth].addCoins(1);
+		}
+		else
+		{
+			players[turn].addCoins(-2);
+			players[oth].addCoins(2);
+		}
+	}
+	public Player[] getPlayers()
+	{
+		return players;
+	}
 	public int[][] getPoints()
 	{
 		int[][] points = new int[3][];
 		for(int i = 0; i < 3; i++)
-			points[i] = players[i].getScore();
+			points[i] = players[i].getScore(players);
 		return points;
 	}
 	public ArrayList<Object> getGameState()
@@ -112,7 +149,7 @@ public class Board
 		gs.add(players);
 		gs.add((Integer) age);
 		gs.add((Integer) turn);
-		
+		gs.add(getPoints());
 		return gs;
 	}
 }
