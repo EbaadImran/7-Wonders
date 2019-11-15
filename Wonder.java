@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -6,15 +7,20 @@ import java.util.TreeSet;
 public class Wonder {
 	private String[] attributes;
 	private Card[] stages;
+	private ArrayList<String> chooseRes;
+	private ArrayList<String> removeRes;
 	private HashMap<String, Integer> usableRes;
 	private HashSet<String> tradableRes;
 	private HashMap<String, TreeSet<Card>> structures;
+	
 	public Wonder(String att) {
 		//name|res|cost1|cost2|cost3|stage1|stage2|stage3
 		attributes = att.split("|");
 		stages = new Card[3];
 		usableRes = new HashMap<>();
 		tradableRes = new HashSet<>();
+		removeRes = new ArrayList<>();
+		chooseRes = new ArrayList<>();
 		structures = new HashMap<>();
 		
 		structures.put("brown", new TreeSet<>());
@@ -36,6 +42,10 @@ public class Wonder {
 		usableRes.put(attributes[1], 1);
 		tradableRes.add(attributes[1]);
 	}
+	public String getName()
+	{
+		return attributes[0];
+	}
 	public void addUsable(String res)
 	{
 		usableRes.put(res, usableRes.get(res));
@@ -44,9 +54,35 @@ public class Wonder {
 	{
 		tradableRes.add(res);
 	}
+	public void addChoose(String choice)
+	{
+		chooseRes.add(choice);
+	}
 	public int getUsableRes(String res)
 	{
 		return usableRes.get(res);
+	}
+	public void removeRes(int i, int choice)
+	{
+		String[] temp = chooseRes.remove(i).split("/");
+		usableRes.put(temp[choice], usableRes.get(temp[choice]) + 1);
+		removeRes.add(temp[choice]);
+	}
+	public void resetUsable()
+	{
+		for(int i = 0; i < removeRes.size(); i++)
+		{
+			String temp = removeRes.remove(i);
+			usableRes.put(temp, usableRes.get(temp));
+		}
+	}
+	public ArrayList<String> getChoose()
+	{
+		return chooseRes;
+	}
+	public ArrayList<String> getRemoveRes()
+	{
+		return removeRes;
 	}
 	public Set<String> getTradableRes()
 	{
