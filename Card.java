@@ -13,7 +13,8 @@ public class Card implements Comparable
 	
 	public Card(String att)
 	{
-		String[] attArr = att.split("|");
+		String[] attArr = att.split(",");
+		//System.out.println(att);
 		age = Integer.parseInt(attArr[0]);
 		color = attArr[1];
 		name = attArr[2];
@@ -55,4 +56,5 @@ public class Card implements Comparable
 	public String getFree() {return free;}
 	public String getChain1() {return chain1;}
 	public String getChain2() {return chain2;}
+	public String toString() {return name;}
 }
