@@ -5,14 +5,17 @@ import java.util.Set;
 
 public class Player 
 {
-	int turn;
-	Wonder w;
-	int coins;
-	ArrayList<Card> hand;
-	HashMap<Integer, Integer> points;
-	HashMap<String, Set<String>> oneCostRes;
-	int mPower;
-	HashMap<String, Integer> sci;
+	private int turn;
+	private Wonder w;
+	private int coins;
+	private ArrayList<Card> hand;
+	private HashMap<Integer, Integer> points;
+	private HashMap<Integer, Set<String>> oneCostRes;
+	private int mPower;
+	private HashMap<String, Integer> sci;
+	private int chooseScience;
+	private boolean hasFree;
+	private boolean hasFreeDisc;
 	public Player(String att, int t)
 	{
 		turn = t;
@@ -23,6 +26,9 @@ public class Player
 		points = new HashMap<>();
 		mPower = 0;
 		sci = new HashMap<>();
+		chooseScience = 0;
+		hasFree = false;
+		hasFreeDisc = false;
 		
 		sci.put("sci1", 0);
 		sci.put("sci2", 0);
@@ -50,6 +56,10 @@ public class Player
 	public ArrayList<Card> getHand()
 	{
 		return hand;
+	}
+	public HashMap<Integer, Set<String>> getOneCost()
+	{
+		return oneCostRes;
 	}
 	public HashMap<Integer, Integer> getPoints()
 	{
@@ -88,6 +98,7 @@ public class Player
 		//wonder
 		Card[] cards = w.getStages();
 		total[2] += (cards[0] != null) ? 3:0;
+		total[2] += (cards[1] != null && w.getName().equals("gizahA")) ? 5:0;
 		total[2] += (cards[2] != null) ? 7:0;
 		//civic
 		for(Card c : w.getStructure("blue"))
@@ -175,8 +186,26 @@ public class Player
 					w.addTradable(tot[j]);
 				if(tot.length == 1)
 					w.addUsable(res[i]);
+				else if(tot.length > 1)
+					w.addChoose(res[i]);
 			}
 		}
+	}
+	public void doWonderEffect()
+	{
+		String temp[] = w.getStage2().split(" ");
+		if(temp[0].equals("m"))
+			mPower += temp.length;
+		else if(temp[0].equals("clay/ore/wood/stone"))
+			w.addChoose("clay/ore/wood/stone");
+		else if(temp[0].equals("sci1/sci2/sci3"))
+			chooseScience++;
+		else if(temp[0].equals("coin"))
+			coins += temp.length;
+		else if(temp[0].equals("freedisc"))
+			hasFreeDisc = true;
+		else if(temp[0].equals("free"))
+			hasFree = true;
 	}
 	public void buildWonder(int i)
 	{
