@@ -15,7 +15,7 @@ public class Wonder {
 	
 	public Wonder(String att) {
 		//name|res|cost1|cost2|cost3|stage1|stage2|stage3
-		attributes = att.split("|");
+		attributes = att.split(",");
 		stages = new Card[3];
 		usableRes = new HashMap<>();
 		tradableRes = new HashSet<>();
@@ -48,11 +48,15 @@ public class Wonder {
 	}
 	public void addUsable(String res)
 	{
-		usableRes.put(res, usableRes.get(res));
+		usableRes.put(res, usableRes.get(res) + 1);
 	}
 	public void addTradable(String res)
 	{
 		tradableRes.add(res);
+	}
+	public boolean hasTradableRes(String res)
+	{
+		return tradableRes.contains(res);
 	}
 	public void addChoose(String choice)
 	{
@@ -62,9 +66,18 @@ public class Wonder {
 	{
 		return usableRes.get(res);
 	}
+	public HashMap<String, Integer> allUsableRes()
+	{
+		return usableRes;
+	}
+	public void addTradeResource(String res)
+	{
+		usableRes.put(res, usableRes.get(res) + 1);
+		removeRes.add(res);
+	}
 	public void removeRes(int i, int choice)
 	{
-		String[] temp = chooseRes.remove(i).split("/");
+		String[] temp = chooseRes.get(i).split("/");
 		usableRes.put(temp[choice], usableRes.get(temp[choice]) + 1);
 		removeRes.add(temp[choice]);
 	}
@@ -73,7 +86,7 @@ public class Wonder {
 		for(int i = 0; i < removeRes.size(); i++)
 		{
 			String temp = removeRes.remove(i);
-			usableRes.put(temp, usableRes.get(temp));
+			usableRes.put(temp, usableRes.get(temp) - 1);
 		}
 	}
 	public ArrayList<String> getChoose()
@@ -143,5 +156,19 @@ public class Wonder {
 		//ebaads mom btw LOL!
 		TreeSet<Card> yourmom = structures.get(c.getColor());
 		yourmom.add(c);
+	}
+	public String toString()
+	{
+		String temp = getName() + "\n";
+		temp += "Brown Cards: " + getStructure("brown") + "\n";
+		temp += "Silver Cards: " + getStructure("silver") + "\n";
+		temp += "Blue Cards: " + getStructure("blue") + "\n";
+		temp += "Gold Cards: " + getStructure("gold") + "\n";
+		temp += "Red Cards: " + getStructure("red") + "\n";
+		temp += "Green Cards: " + getStructure("green") + "\n";
+		temp += "Purple Cards: " + getStructure("purple") + "\n";
+		temp += "Usable Resources: " + usableRes + "\n";
+		temp += "Tradable Resources" + tradableRes + "\n";
+		return temp;
 	}
 }
