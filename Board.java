@@ -1,150 +1,174 @@
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.JFrame;
-
-public class SevenWonders extends JFrame
+public class Board 
 {
-	public static void main(String[] args) throws IOException
-	{
-		new SevenWonders();
-	}
-	private Board b;
-	private WonderGraphics panel;
-	private int currAction;
-	private int cardIndex;
+	private int age;
+	private int turn;
+	private int round;
+	private Deck deck;
+	private Player[] players;
 	
-	public SevenWonders() throws IOException
+	public Board() throws IOException
 	{
-		b = new Board();
-		setUpGraphics();
-		startAge();
+		age = 0;
+		round = 0;
+		deck = new Deck();
+		
+		ArrayList<String> wonds = new ArrayList<>();
+		Scanner scan = new Scanner(new File("wonders.txt"));
+		while(scan.hasNext())
+			wonds.add(scan.nextLine());
+		
+		players = new Player[3];
+		for(int i = 0; i < players.length; i++)
+			players[i] = new Player(wonds.remove((int) (Math.random()*wonds.size())), i);
 	}
-	public void startAge()
+	public int getTurn()
 	{
-		b.nextAge();
-		b.deal();
-		updateGame();
-		startTurn();
+		return turn;
 	}
-	public void startTurn()
+	public int getAge()
 	{
-		System.out.println("Age: " + b.getAge() + " Round: " + b.getRound());
-		System.out.println("Player " + (b.getTurn()+1));
-		System.out.println(b.getPlayers()[b.getTurn()]);
-		System.out.println(b.getPlayers()[b.getTurn()].getWonder());
-		System.out.println("Choose Resources: " + b.getPlayers()[b.getTurn()].getWonder().getChoose());
-		Scanner scan = new Scanner(System.in);
-		while(!b.getPlayers()[b.getTurn()].getWonder().getChoose().isEmpty())
+		return age;
+	}
+	public int getRound()
+	{
+		return round;
+	}
+	public int nextTurn()
+	{
+		turn = (turn+1) % 3;
+		return turn;
+	}
+	public int nextRound()
+	{
+		round++;
+		passHands();
+		return round;
+	}
+	public void nextAge()
+	{
+		age = age + 1;
+		round = 1;
+		turn = 0;
+	}
+	public void chooseResource(int i, int choice)
+	{
+		players[turn].getWonder().removeRes(i, choice);
+	}
+	public void doAction(int a, int i)
+	{
+		if(a == 0)
+			players[turn].playCard(i);
+		else if(a == 1)
+			players[turn].buildWonder(i);
+		else if(a == 2)
+			deck.discard(players[turn].discard(i));
+	}
+	public void doEffect(String eff)
+	{
+		String[] parts = eff.split(" ");
+		int total = 0;
+		//left and right coins
+		if(parts[0].equals("all"))
 		{
-			selectResource(scan.nextInt(), scan.nextInt());
+			if(parts[1].equals("brown"))
+				total += players[0].getColorAmt("brown") + players[1].getColorAmt("brown") + players[2].getColorAmt("brown");
+			else if(parts[1].equals("silver"))
+				total += (players[0].getColorAmt("silver") + players[1].getColorAmt("silver") + players[2].getColorAmt("silver")) * 2;
 		}
-		System.out.println("Trade? (Y / N): ");
-		String trade = scan.next();
-		while(trade.equals("Y"))
+		else if(parts[0].equals("self"))
 		{
-			System.out.println("With Whom and What: ");
-			if(!trade(scan.nextInt(), scan.next()));
-				System.out.println("Unable to Trade!");
-			System.out.println("Trade? (Y / N): ");
-			trade = scan.next();
+			if(parts[1].equals("wonder"))
+				total += 3*(players[turn].getWonderAmt());
+			else if(parts[1].equals("brown"))
+				total += players[turn].getColorAmt("brown");
+			else if(parts[1].equals("silver"))
+				total += players[turn].getColorAmt("silver") * 2;
+			else if(parts[1].equals("gold"))
+				total += players[turn].getColorAmt("gold");
 		}
-		System.out.println("Select Card: ");
-		cardIndex = scan.nextInt();
-		System.out.println("Options: " + options(cardIndex));
-		currAction = scan.nextInt();
-		doMove();
-		endTurn();
+		players[turn].addCoins(total);
 	}
-	public ArrayList<String> options(int pos)
+	public void deal()
 	{
-		boolean[] arr = b.getPlayers()[b.getTurn()].getPosActions(b.getPlayers()[b.getTurn()].getCard(pos));
-		ArrayList<String> temp = new ArrayList<>();
-		if(arr[0])
-			temp.add("Play Card [0]");
-		else if(arr[1])
-			temp.add("Build Wonder [1]");
-		temp.add("Discard [2]");
-		return temp;
-	}
-	public boolean trade(int oth, String res)
-	{
-		if(b.tradable(oth, res))
+		ArrayList<Card> hand1 = new ArrayList<>();
+		ArrayList<Card> hand2 = new ArrayList<>();
+		ArrayList<Card> hand3 = new ArrayList<>();
+		for(int i = 0; i < 7; i++)
 		{
-			b.trade(oth, res);
-			return true;
+			hand1.add(deck.draw(age));
+			hand2.add(deck.draw(age));
+			hand3.add(deck.draw(age));
 		}
-		return false;
+		players[0].setHand(hand1);
+		players[1].setHand(hand2);
+		players[2].setHand(hand3);
 	}
-	public void doMove()
+	public void passHands()
 	{
-		b.doAction(currAction, cardIndex);
-	}
-	public void selectResource(int i, int choice)
-	{
-		b.getPlayers()[b.getTurn()].getWonder().removeRes(i, choice);
-	}
-	public void endTurn()
-	{
-		b.getPlayers()[b.getTurn()].getWonder().resetUsable();
-		if(b.getRound() < 7)
+		if(age % 2 == 1)
 		{
-			if(b.nextTurn() == 0)
-				b.nextRound();
-			startTurn();
+			ArrayList<Card> temp = players[2].getHand();
+			players[2].setHand(players[1].getHand());
+			players[1].setHand(players[0].getHand());
+			players[0].setHand(temp);
 		}
-		else if(b.getAge() < 3)
-			startAge();
 		else
-			win();
-	}
-	public void win()
-	{
-		panel.win();
-	}
-	public void setUpGraphics()
-	{
-		setSize(1920, 1080);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel = new WonderGraphics();
-		add(panel);
-		this.addMouseListener(new MouseAdapter()
 		{
-			public void mousePressed(MouseEvent e)
-			{
-				int x = e.getX(), y = e.getY();
-				if(panel.isTitleScreen())
-				{
-					panel.turnOffTitleScreen();
-					repaint();
-				}
-				//g.drawImage(arrow, 512/4, 1080 - (512/3), -1*(512/4), 512/4, null);
-				//g.drawImage(arrow, 129, 1080 - (512/3), 512/4, 512/4, null);
-				else if(panel.isPlayScreen() && x>= 30 && x<=512/4-30 && y>=1080 - 512/3 && y<=1080 - 512/3 + 512/4)
-				{
-					int t = panel.getTurn()-1;
-					if(t==0)
-						t = 3;
-					panel.setTurn(t);
-				}
-				else if(panel.isPlayScreen() && x>=512/4+1 && x<=512/4+512/4-30 && y>=1080 - 512/3 && y<=1080 - 512/3 + 512/4)
-				{
-					int t = panel.getTurn() + 1;
-					if(t==4)
-						t = 1;
-					panel.setTurn(t);
-				}
-			}
-		});
-		//setUndecorated(true);
-		setVisible(true);
+			ArrayList<Card> temp = players[0].getHand();
+			players[0].setHand(players[1].getHand());
+			players[1].setHand(players[2].getHand());
+			players[2].setHand(temp);
+		}
 	}
-	public void updateGame()
+	public boolean tradable(int oth, String res)
 	{
-		panel.setGS(b.getGameState());
+		if(players[oth].getWonder().hasTradableRes(res))
+			System.out.println("Has");
+		else
+			System.out.println("Doesnt Have");
+		if(players[turn].getCoins() >= players[turn].getPrice(oth, res))
+			System.out.println("Enough");
+		else
+			System.out.println("Not enough");
+		return players[oth].getWonder().hasTradableRes(res) && players[turn].getCoins() >= players[turn].getPrice(oth, res);
 	}
-}
+	public void trade(int oth, String res)
+	{
+		if(players[turn].getOneCost().get(oth).contains(res))
+		{
+			players[turn].addCoins(-1);
+			players[oth].addCoins(1);
+		}
+		else
+		{
+			players[turn].addCoins(-2);
+			players[oth].addCoins(2);
+		}
+		players[turn].getWonder().addTradeResource(res);
+	}
+	public Player[] getPlayers()
+	{
+		return players;
+	}
+	public int[][] getPoints()
+	{
+		int[][] points = new int[3][];
+		for(int i = 0; i < 3; i++)
+			points[i] = players[i].getScore(players);
+		return points;
+	}
+	public ArrayList<Object> getGameState()
+	{
+		ArrayList<Object> gs = new ArrayList<Object>();
+		gs.add(players);
+		gs.add((Integer) age);
+		gs.add((Integer) turn);
+		gs.add(getPoints());
+		return gs;
+	}
 }
