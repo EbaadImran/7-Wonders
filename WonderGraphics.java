@@ -29,15 +29,9 @@ public class WonderGraphics extends JPanel implements ActionListener{
 		tm = new Timer(38, this);
 		y = 1080/2 + 30;
 		yVel = 1;
-		try {
-			bg = new ImageIcon("bg.jpg");
-			logo = new ImageIcon("logo.png");
-			arrow = new ImageIcon("chevron.png");
-		}
-		catch(Exception e)
-		{
-			System.out.println("Error");
-		}
+		bg = new ImageIcon("bg.jpg");
+		logo = new ImageIcon("logo.png");
+		arrow = new ImageIcon("chevron.png");
 	}
 	public void paintComponent(Graphics g)
 	{
@@ -46,8 +40,8 @@ public class WonderGraphics extends JPanel implements ActionListener{
 		{
 			g.drawImage(bg.getImage(), 0, 0, 1920, 1080, null);
 			g.drawImage(logo.getImage(), 1920/2 - 295, 1080/2 - 310, 570, 460, null);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("default", Font.BOLD, 27));
+			g.setColor(new Color(34, 161, 181));
+			g.setFont(new Font("monospaced", Font.BOLD, 27));
 			g.drawString("CLICK TO PLAY", 1920/2 - 120, y);
 			tm.start();
 		}
@@ -85,6 +79,11 @@ public class WonderGraphics extends JPanel implements ActionListener{
 	{
 		isTitleScreen = false;
 		isPlayScreen = true;
+	}
+	public void win()
+	{
+		isWinScreen = true;
+		isPlayScreen = false;
 	}
 	public boolean isPlayScreen()
 	{
