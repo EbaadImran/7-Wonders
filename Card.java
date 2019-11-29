@@ -30,7 +30,7 @@ public class Card implements Comparable
 			if(!costs[i].equals("-"))
 			{
 				this.cost.putIfAbsent(costs[i], 0);
-				this.cost.put(costs[i], this.cost.get(costs[i]));
+				this.cost.put(costs[i], this.cost.get(costs[i])+1);
 			}
 		}
 	}
