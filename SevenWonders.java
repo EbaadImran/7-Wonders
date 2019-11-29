@@ -1,6 +1,8 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -12,7 +14,7 @@ public class SevenWonders extends JFrame
 	}
 	private Board b;
 	private WonderGraphics panel;
-	private String currAction;
+	private int currAction;
 	private int cardIndex;
 	
 	public SevenWonders() throws IOException
@@ -30,8 +32,54 @@ public class SevenWonders extends JFrame
 	}
 	public void startTurn()
 	{
+		System.out.println("Age: " + b.getAge() + " Round: " + b.getRound());
 		System.out.println("Player " + (b.getTurn()+1));
-		System.out.println("Hand: " + b.getPlayers()[b.getTurn()].getHand());
+		System.out.println(b.getPlayers()[b.getTurn()]);
+		System.out.println(b.getPlayers()[b.getTurn()].getWonder());
+		System.out.println("Choose Resources: " + b.getPlayers()[b.getTurn()].getWonder().getChoose());
+		Scanner scan = new Scanner(System.in);
+		while(!b.getPlayers()[b.getTurn()].getWonder().getChoose().isEmpty())
+		{
+			selectResource(scan.nextInt(), scan.nextInt());
+		}
+		System.out.println("Trade? (Y / N): ");
+		String trade = scan.next();
+		while(trade.equals("Y"))
+		{
+			System.out.println("With Whom and What: ");
+			if(!trade(scan.nextInt(), scan.next()))
+				System.out.println("Unable to Trade!");
+			else
+				System.out.println(b.getPlayers()[b.getTurn()].getWonder().allUsableRes());
+			System.out.println("Trade? (Y / N): ");
+			trade = scan.next();
+		}
+		System.out.println("Select Card: ");
+		cardIndex = scan.nextInt();
+		System.out.println("Options: " + options(cardIndex));
+		currAction = scan.nextInt();
+		doMove();
+		endTurn();
+	}
+	public ArrayList<String> options(int pos)
+	{
+		boolean[] arr = b.getPlayers()[b.getTurn()].getPosActions(b.getPlayers()[b.getTurn()].getCard(pos));
+		ArrayList<String> temp = new ArrayList<>();
+		if(arr[0])
+			temp.add("Play Card [0]");
+		else if(arr[1])
+			temp.add("Build Wonder [1]");
+		temp.add("Discard [2]");
+		return temp;
+	}
+	public boolean trade(int oth, String res)
+	{
+		System.out.println(oth + " " + res);
+		boolean tradable = b.tradable(oth, res);
+		if(tradable)
+			b.trade(oth, res);
+		System.out.println(tradable);
+		return tradable;
 	}
 	public void doMove()
 	{
@@ -44,8 +92,12 @@ public class SevenWonders extends JFrame
 	public void endTurn()
 	{
 		b.getPlayers()[b.getTurn()].getWonder().resetUsable();
-		if(b.getRound() < 6)
-			b.nextTurn();
+		if(b.getRound() < 7)
+		{
+			if(b.nextTurn() == 0)
+				b.nextRound();
+			startTurn();
+		}
 		else if(b.getAge() < 3)
 			startAge();
 		else
