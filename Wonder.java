@@ -8,6 +8,7 @@ public class Wonder {
 	private String[] attributes;
 	private Card[] stages;
 	private ArrayList<String> chooseRes;
+	private ArrayList<String> allChooseRes;
 	private ArrayList<String> removeRes;
 	private HashMap<String, Integer> usableRes;
 	private HashSet<String> tradableRes;
@@ -21,6 +22,7 @@ public class Wonder {
 		tradableRes = new HashSet<>();
 		removeRes = new ArrayList<>();
 		chooseRes = new ArrayList<>();
+		allChooseRes = new ArrayList<>();
 		structures = new HashMap<>();
 		
 		structures.put("brown", new TreeSet<>());
@@ -61,6 +63,7 @@ public class Wonder {
 	public void addChoose(String choice)
 	{
 		chooseRes.add(choice);
+		allChooseRes.add(choice);
 	}
 	public int getUsableRes(String res)
 	{
@@ -77,7 +80,7 @@ public class Wonder {
 	}
 	public void removeRes(int i, int choice)
 	{
-		String[] temp = chooseRes.get(i).split("/");
+		String[] temp = chooseRes.remove(i).split("/");
 		usableRes.put(temp[choice], usableRes.get(temp[choice]) + 1);
 		removeRes.add(temp[choice]);
 	}
@@ -88,6 +91,8 @@ public class Wonder {
 			String temp = removeRes.remove(i);
 			usableRes.put(temp, usableRes.get(temp) - 1);
 		}
+		for(String k : allChooseRes)
+			chooseRes.add(k);
 	}
 	public ArrayList<String> getChoose()
 	{
