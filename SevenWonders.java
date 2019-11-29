@@ -92,12 +92,10 @@ public class SevenWonders extends JFrame
 	public void endTurn()
 	{
 		b.getPlayers()[b.getTurn()].getWonder().resetUsable();
+		if(b.nextTurn() == 0)
+			b.nextRound();
 		if(b.getRound() < 7)
-		{
-			if(b.nextTurn() == 0)
-				b.nextRound();
 			startTurn();
-		}
 		else if(b.getAge() < 3)
 			startAge();
 		else
