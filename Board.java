@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Board 
@@ -104,6 +105,9 @@ public class Board
 			hand2.add(deck.draw(age));
 			hand3.add(deck.draw(age));
 		}
+		Collections.sort(hand1);
+		Collections.sort(hand2);
+		Collections.sort(hand3);
 		players[0].setHand(hand1);
 		players[1].setHand(hand2);
 		players[2].setHand(hand3);
