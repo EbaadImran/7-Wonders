@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Player 
@@ -10,7 +10,7 @@ public class Player
 	private int coins;
 	private ArrayList<Card> hand;
 	private HashMap<Integer, Integer> points;
-	private HashMap<Integer, Set<String>> oneCostRes;
+	private HashMap<Integer, HashSet<String>> oneCostRes;
 	private int mPower;
 	private HashMap<String, Integer> sci;
 	private int chooseScience;
@@ -34,6 +34,9 @@ public class Player
 		sci.put("sci2", 0);
 		sci.put("sci3", 0);
 		
+		oneCostRes.put((turn+1) % 3, new HashSet<String>()); //right
+		oneCostRes.put((turn+2) % 3, new HashSet<String>()); //left
+		
 		points.put(-1, 0);
 		points.put(1, 0);
 		points.put(3, 0);
@@ -53,11 +56,15 @@ public class Player
 	{
 		return coins;
 	}
+	public Card getCard(int i)
+	{
+		return hand.get(i);
+	}
 	public ArrayList<Card> getHand()
 	{
 		return hand;
 	}
-	public HashMap<Integer, Set<String>> getOneCost()
+	public HashMap<Integer, HashSet<String>> getOneCost()
 	{
 		return oneCostRes;
 	}
@@ -76,6 +83,10 @@ public class Player
 			return 2;
 		return 1;
 	}
+	public int getPrice(int player, String res)
+	{
+		return (oneCostRes.get(player).contains(res)) ? 1 : 2;
+	}
 	public int getColorAmt(String color)
 	{
 		return w.getStructure(color).size();
@@ -83,6 +94,10 @@ public class Player
 	public int getNegs()
 	{
 		return points.get(-1);
+	}
+	public boolean[] getPosActions(Card oth)
+	{
+		return new boolean[]{playable(oth), activatable()};
 	}
 	public int[] getScore(Player[] players)
 	{
@@ -163,6 +178,8 @@ public class Player
 		//Josh Le got Iss for going to In-and-Out, he basically is the biggest monkey alive ginga gunga ginga gunga
 		Card thing = hand.remove(joshleisajoke);
 		w.build(thing);
+		if(thing.getCost().containsKey("coin"))
+			coins--;
 		doEffect(thing);
 	}
 	public void doEffect(Card thing)
@@ -181,13 +198,35 @@ public class Player
 			String[] res = thing.getEffect().split(" ");
 			for(int i = 0; i < res.length; i++)
 			{
-				String[] tot = res[i].split("/");
-				for(int j = 0; j < tot.length; j++)
-					w.addTradable(tot[j]);
-				if(tot.length == 1)
-					w.addUsable(res[i]);
-				else if(tot.length > 1)
+				if(res[i].contains("/"))
+				{
 					w.addChoose(res[i]);
+					w.addTradable(res[i].substring(0, res[i].indexOf("/")));
+					w.addTradable(res[i].substring(res[i].indexOf("/")+1));
+				}
+				else
+				{
+					w.addUsable(res[i]);
+					w.addTradable(res[i]);
+				}
+			}
+		}
+		else if(thing.getColor().equals("gold"))
+		{
+			String[] eff = thing.getEffect().split(" ");
+			if(eff[0].equals("left"))
+				for(int i = 1; i < eff.length; i++)
+					oneCostRes.get((turn + 2) % 3).add(eff[i]);
+			else if(eff[0].equals("right"))
+				for(int i = 1; i < eff.length; i++)
+					oneCostRes.get((turn + 1) % 3).add(eff[i]);
+			else if(eff[0].equals("both"))
+			{
+				for(int i = 1; i < eff.length; i++)
+				{
+					oneCostRes.get((turn + 1) % 3).add(eff[i]);
+					oneCostRes.get((turn + 2) % 3).add(eff[i]);
+				}
 			}
 		}
 	}
@@ -218,16 +257,25 @@ public class Player
 	}
 	public boolean playable(Card oth)
 	{
+		System.out.println(oth.getCost());
+		
 		if(w.hasStructure(oth.getName()))
 			return false;
 		
-		boolean byCost = true;
-		for(String k : oth.getCost().keySet())
-			if(w.getUsableRes(k) < oth.getCost().get(k))
+		if(oth.getCost().get("coin") != null)
+		{
+			if(coins >= 1)
+				return true;
+		}
+		else
+		{
+			boolean byCost = true;
+			for(String k : oth.getCost().keySet())
+				if(w.getUsableRes(k) < oth.getCost().get(k))
 				byCost = false;
-		if(byCost)
-			return true;
-		
+			if(byCost)
+				return true;
+		}
 		if(w.hasStructure(oth.getFree()))
 			return true;
 		
@@ -254,5 +302,15 @@ public class Player
 	public void setHand(ArrayList<Card> eshaimran)
 	{
 		hand = eshaimran;
+	}
+	public String toString()
+	{
+		String temp = "Hand: " + hand + "\n";
+		temp += "Coins: " + coins + "\n";
+		temp += "M -1: " + points.get(-1) + "\n";
+		temp += "M 1: " + points.get(1) + "\n";
+		temp += "M 3: " + points.get(3) + "\n";
+		temp += "M 5: " + points.get(5) + "\n";
+		return temp;
 	}
 }
