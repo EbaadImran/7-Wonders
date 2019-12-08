@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ public class Board
 	private int round;
 	private Deck deck;
 	private Player[] players;
+	private String[] moves;
 	
 	public Board() throws IOException
 	{
@@ -63,11 +65,31 @@ public class Board
 	public void doAction(int a, int i)
 	{
 		if(a == 0)
-			players[turn].playCard(i);
+		{
+			doEffect(players[turn].getCard(i).getEffect());
+			players[turn].playCard(i);	
+		}
 		else if(a == 1)
 			players[turn].buildWonder(i);
 		else if(a == 2)
 			deck.discard(players[turn].discard(i));
+		else if(a == 3)
+		{
+			doEffect(players[turn].getCard(i).getEffect());
+			players[turn].playCard(i);
+			if(age == 1)
+				players[turn].removeHas1();
+			else if(age == 2)
+				players[turn].removeHas2();
+			else if(age == 3)
+				players[turn].removeHas3();
+		}
+	}
+	public void haliEffect(int a, int i)
+	{
+		Card c = deck.getDiscard(a).remove(i);
+		doEffect(c.getEffect());
+		players[turn].playCard(c);
 	}
 	public void doEffect(String eff)
 	{
@@ -108,6 +130,12 @@ public class Board
 		Collections.sort(hand1);
 		Collections.sort(hand2);
 		Collections.sort(hand3);
+		for(Player k : players)
+		{
+			ArrayList<Card> temp = k.getHand();
+			while(!temp.isEmpty())
+				deck.discard(temp.remove(0));
+		}
 		players[0].setHand(hand1);
 		players[1].setHand(hand2);
 		players[2].setHand(hand3);
@@ -131,14 +159,6 @@ public class Board
 	}
 	public boolean tradable(int oth, String res)
 	{
-		if(players[oth].getWonder().hasTradableRes(res))
-			System.out.println("Has");
-		else
-			System.out.println("Doesnt Have");
-		if(players[turn].getCoins() >= players[turn].getPrice(oth, res))
-			System.out.println("Enough");
-		else
-			System.out.println("Not enough");
 		return players[oth].getWonder().hasTradableRes(res) && players[turn].getCoins() >= players[turn].getPrice(oth, res);
 	}
 	public void trade(int oth, String res)
@@ -154,10 +174,19 @@ public class Board
 			players[oth].addCoins(2);
 		}
 		players[turn].getWonder().addTradeResource(res);
+		players[oth].getWonder().removeTrade(res);
 	}
 	public Player[] getPlayers()
 	{
 		return players;
+	}
+	public Player getCurrPlayer()
+	{
+		return players[turn];
+	}
+	public Deck getDeck()
+	{
+		return deck;
 	}
 	public int[][] getPoints()
 	{
@@ -169,10 +198,50 @@ public class Board
 	public ArrayList<Object> getGameState()
 	{
 		ArrayList<Object> gs = new ArrayList<Object>();
-		gs.add(players);
-		gs.add((Integer) age);
-		gs.add((Integer) turn);
-		gs.add(getPoints());
+		gs.add(players); //0
+		gs.add((Integer) age); //1
+		gs.add((Integer) turn); //2
+		gs.add((Integer) round); //3
+		gs.add(getPoints()); //4
+		gs.add(podium()); //5
+		gs.add(deck); //6
 		return gs;
+	}
+	public void war()
+	{
+		for(int i = 0; i < 3; i++)
+		{
+			if(players[i].getMPower() > players[(i+1) % 3].getMPower())
+			{
+				players[(i+1) % 3].addPoints(-1, 1);
+				players[i].addPoints(1 + (age-1)*2, 1);
+			}
+			if(players[i].getMPower() > players[(i+2) % 3].getMPower())
+			{
+				players[(i+2) % 3].addPoints(-1, 1);
+				players[i].addPoints(1 + (age-1)*2, 1);
+			}
+		}
+	}
+	public ArrayList<Player> podium() 
+	{
+		int tot1 = 0;
+		int tot2 = 0;
+		int tot3 = 0;
+		for(int k : getPoints()[0])
+			tot1 += k;
+		for(int k : getPoints()[1])
+			tot2 += k;
+		for(int k : getPoints()[2])
+			tot3 += k;
+		players[0].setScore(tot1);
+		players[1].setScore(tot2);
+		players[2].setScore(tot3);
+		ArrayList<Player> temp = new ArrayList<>();
+		temp.add(players[0]);
+		temp.add(players[1]);
+		temp.add(players[2]);
+		Collections.sort(temp);
+		return temp;
 	}
 }
