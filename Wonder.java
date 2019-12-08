@@ -11,7 +11,8 @@ public class Wonder {
 	private ArrayList<String> allChooseRes;
 	private ArrayList<String> removeRes;
 	private HashMap<String, Integer> usableRes;
-	private HashSet<String> tradableRes;
+	private ArrayList<String> tradableRes;
+	private ArrayList<String> allRes;
 	private HashMap<String, TreeSet<Card>> structures;
 	
 	public Wonder(String att) {
@@ -19,7 +20,8 @@ public class Wonder {
 		attributes = att.split(",");
 		stages = new Card[3];
 		usableRes = new HashMap<>();
-		tradableRes = new HashSet<>();
+		tradableRes = new ArrayList<>();
+		allRes = new ArrayList<>();
 		removeRes = new ArrayList<>();
 		chooseRes = new ArrayList<>();
 		allChooseRes = new ArrayList<>();
@@ -43,6 +45,7 @@ public class Wonder {
 		
 		usableRes.put(attributes[1], 1);
 		tradableRes.add(attributes[1]);
+		allRes.add(attributes[1]);
 	}
 	public String getName()
 	{
@@ -55,6 +58,7 @@ public class Wonder {
 	public void addTradable(String res)
 	{
 		tradableRes.add(res);
+		allRes.add(res);
 	}
 	public boolean hasTradableRes(String res)
 	{
@@ -68,6 +72,14 @@ public class Wonder {
 	public int getUsableRes(String res)
 	{
 		return usableRes.get(res);
+	}
+	public int getTradableAmt(String res)
+	{
+		int cnt = 0;
+		for(String k : tradableRes)
+			if(k.equals(res))
+				cnt++;
+		return cnt;
 	}
 	public HashMap<String, Integer> allUsableRes()
 	{
@@ -86,13 +98,23 @@ public class Wonder {
 	}
 	public void resetUsable()
 	{
-		for(int i = 0; i < removeRes.size(); i++)
+		while(!removeRes.isEmpty())
 		{
-			String temp = removeRes.remove(i);
+			String temp = removeRes.remove(0);
 			usableRes.put(temp, usableRes.get(temp) - 1);
 		}
 		for(String k : allChooseRes)
 			chooseRes.add(k);
+	}
+	public void removeTrade(String res)
+	{
+		tradableRes.remove(tradableRes.indexOf(res));
+	}
+	public void resetTradable()
+	{
+		tradableRes.clear();
+		for(String k : allRes)
+			tradableRes.add(k);
 	}
 	public ArrayList<String> getChoose()
 	{
@@ -102,7 +124,7 @@ public class Wonder {
 	{
 		return removeRes;
 	}
-	public Set<String> getTradableRes()
+	public ArrayList<String> getTradableRes()
 	{
 		return tradableRes;
 	}
@@ -175,5 +197,8 @@ public class Wonder {
 		temp += "Usable Resources: " + usableRes + "\n";
 		temp += "Tradable Resources" + tradableRes + "\n";
 		return temp;
+	}
+	public HashMap<String, TreeSet<Card>> getStruc(){
+		return structures;
 	}
 }
