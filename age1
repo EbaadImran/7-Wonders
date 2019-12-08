@@ -1,21 +1,21 @@
-1|brown|lumberyard|wood|-|-|-|-
-1|brown|stonepit|stone|-|-|-|-
-1|brown|claypool|clay|-|-|-|-
-1|brown|orevein|ore|-|-|-|-
-1|brown|claypit|clay/ore|coin|-|-|-
-1|brown|timberyard|stone/wood|coin|-|-|-
-1|silver|loom|loom|-|-|-|-
-1|silver|glassworks|glass|-|-|-|-
-1|silver|press|papyrus|-|-|-|-
-1|blue|baths|3|stone|-|aqueduct|-
-1|blue|altar|2|-|-|temple|-
-1|blue|theater|2|-|-|statue|-
-1|gold|easttradingpost|right clay stone ore wood|-|-|forum|-
-1|gold|westtradingpost|left clay stone ore wood|-|-|forum|-
-1|gold|marketplace|both glass loom papyrus|-|-|caravansery|-
-1|red|stockade|1|wood|-|-|-
-1|red|barracks|1|ore|-|-|-
-1|red|guardtower|1|clay|-|-|-
-1|green|apothecary|sci1|loom|-|stables|dispensary
-1|green|workshop|sci2|glass|-|laboratory|archeryrange
-1|green|scriptorium|sci3|papyrus|-|courthouse|library
+1,brown,lumberyard,wood,-,-,-,-
+1,brown,stonepit,stone,-,-,-,-
+1,brown,claypool,clay,-,-,-,-
+1,brown,orevein,ore,-,-,-,-
+1,brown,claypit,clay/ore,coin,-,-,-
+1,brown,timberyard,stone/wood,coin,-,-,-
+1,silver,loom,loom,-,-,-,-
+1,silver,glassworks,glass,-,-,-,-
+1,silver,press,papyrus,-,-,-,-
+1,blue,baths,3,stone,-,aqueduct,-
+1,blue,altar,2,-,-,temple,-
+1,blue,theater,2,-,-,statue,-
+1,gold,easttradingpost,right clay stone ore wood,-,-,forum,-
+1,gold,westtradingpost,left clay stone ore wood,-,-,forum,-
+1,gold,marketplace,both glass loom papyrus,-,-,caravansery,-
+1,red,stockade,1,wood,-,-,-
+1,red,barracks,1,ore,-,-,-
+1,red,guardtower,1,clay,-,-,-
+1,green,apothecary,sci1,loom,-,stables,dispensary
+1,green,workshop,sci2,glass,-,laboratory,archeryrange
+1,green,scriptorium,sci3,papyrus,-,courthouse,library
