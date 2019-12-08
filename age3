@@ -1,16 +1,16 @@
-3|blue|pantheon|7|clay clay ore papyrus loom glass|temple|-|-
-3|blue|gardens|5|clay clay wood|statue|-|-
-3|blue|townhall|6|stone stone ore glass|-|-|-
-3|blue|palace|8|clay wood ore stone glass papyrus loom|-|-|-
-3|blue|senate|6|wood wood ore stone|library|-|-
-3|gold|haven|self brown coin v|wood ore loom|forum|-|-
-3|gold|lighthouse|self gold coin v|stone glass|caravansery|-|-
-3|gold|arena|self wonder coin coin coin v|stone stone ore|dispensary|-|-
-3|red|fortifications|3|ore ore ore stone|walls|-|-
-3|red|arsenal|3|wood wood ore loom|-|-|-
-3|red|siegeworkshop|3|clay clay clay wood|laboratory|-|-
-3|green|lodge|sci1|clay clay loom papyrus|dispensary|-|-
-3|green|observatory|sci2|ore ore glass loom|laboratory|-|-
-3|green|university|sci3|wood wood papyrus glass|library|-|-
-3|green|academy|sci1|stone stone stone glass|school|-|-
-3|green|study|sci2|wood papyrus loom|school|-|-
+3,blue,pantheon,7,clay clay ore papyrus loom glass,temple,-,-
+3,blue,gardens,5,clay clay wood,statue,-,-
+3,blue,townhall,6,stone stone ore glass,-,-,-
+3,blue,palace,8,clay wood ore stone glass papyrus loom,-,-,-
+3,blue,senate,6,wood wood ore stone,library,-,-
+3,gold,haven,self brown coin v,wood ore loom,forum,-,-
+3,gold,lighthouse,self gold coin v,stone glass,caravansery,-,-
+3,gold,arena,self wonder coin coin coin v,stone stone ore,dispensary,-,-
+3,red,fortifications,3,ore ore ore stone,walls,-,-
+3,red,arsenal,3,wood wood ore loom,-,-,-
+3,red,siegeworkshop,3,clay clay clay wood,laboratory,-,-
+3,green,lodge,sci1,clay clay loom papyrus,dispensary,-,-
+3,green,observatory,sci2,ore ore glass loom,laboratory,-,-
+3,green,university,sci3,wood wood papyrus glass,library,-,-
+3,green,academy,sci1,stone stone stone glass,school,-,-
+3,green,study,sci2,wood papyrus loom,school,-,-
