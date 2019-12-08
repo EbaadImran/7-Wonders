@@ -48,6 +48,10 @@ public class Deck
 		Collections.shuffle(ages.get(3));
 	}
 	public Card draw(int age) {return ages.get(age).remove(0);}
-	public void discard(Card c) {discard.get(c.getAge()).add(c);}
+	public void discard(Card c) 
+	{
+		discard.get(c.getAge()).add(c);
+		Collections.sort(discard.get(c.getAge()));
+	}
 	public ArrayList<Card> getDiscard(int age) {return discard.get(age);}
 }
