@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
-public class Player 
+public class Player implements Comparable
 {
 	private int turn;
 	private Wonder w;
@@ -14,7 +13,10 @@ public class Player
 	private int mPower;
 	private HashMap<String, Integer> sci;
 	private int chooseScience;
-	private boolean hasFree;
+	private int score;
+	private boolean hasFree1;
+	private boolean hasFree2;
+	private boolean hasFree3;
 	private boolean hasFreeDisc;
 	public Player(String att, int t)
 	{
@@ -27,7 +29,9 @@ public class Player
 		mPower = 0;
 		sci = new HashMap<>();
 		chooseScience = 0;
-		hasFree = false;
+		hasFree1 = false;
+		hasFree2 = false;
+		hasFree3 = false;
 		hasFreeDisc = false;
 		
 		sci.put("sci1", 0);
@@ -41,6 +45,18 @@ public class Player
 		points.put(1, 0);
 		points.put(3, 0);
 		points.put(5, 0);
+	}
+	public void removeHas1()
+	{
+		hasFree1 = false;
+	}
+	public void removeHas2()
+	{
+		hasFree2 = false;
+	}
+	public void removeHas3()	
+	{
+		hasFree3 = false;
 	}
 	public void addCoins(int i)
 	{
@@ -56,9 +72,17 @@ public class Player
 	{
 		return coins;
 	}
+	public int getMPower()
+	{
+		return mPower;
+	}
 	public Card getCard(int i)
 	{
 		return hand.get(i);
+	}
+	public int getTurn()
+	{
+		return turn;
 	}
 	public ArrayList<Card> getHand()
 	{
@@ -97,7 +121,11 @@ public class Player
 	}
 	public boolean[] getPosActions(Card oth)
 	{
-		return new boolean[]{playable(oth), activatable()};
+		boolean[] temp = new boolean[3];
+		temp[0] = playable(oth);
+		temp[1] = activatable();
+		temp[2] = ((hand.get(0).getAge() == 1 && hasFree1) || (hand.get(0).getAge() == 2 && hasFree2) || (hand.get(0).getAge() == 3 && hasFree3)) ? true:false;
+		return temp;
 	}
 	public int[] getScore(Player[] players)
 	{
@@ -182,6 +210,11 @@ public class Player
 			coins--;
 		doEffect(thing);
 	}
+	public void playCard(Card c)
+	{
+		w.build(c);
+		doEffect(c);
+	}
 	public void doEffect(Card thing)
 	{
 		if(thing.getColor().equals("red"))
@@ -244,10 +277,29 @@ public class Player
 		else if(temp[0].equals("freedisc"))
 			hasFreeDisc = true;
 		else if(temp[0].equals("free"))
-			hasFree = true;
+		{
+			hasFree1 = true;
+			hasFree2 = true;
+			hasFree3 = true;
+			System.out.println("OLYMPIA ACTIVATED");
+		}
+	}
+	public boolean hasFree1()
+	{
+		return hasFree1;
+	}
+	public boolean hasFree2()
+	{
+		return hasFree2;
+	}
+	public boolean hasFree3()
+	{
+		return hasFree3;
 	}
 	public void buildWonder(int i)
 	{
+		if(getWonderAmt() == 2)
+			doWonderEffect();
 		w.activate(hand.remove(i));
 	}
 	public Card discard(int i)
@@ -266,20 +318,60 @@ public class Player
 		{
 			if(coins >= 1)
 				return true;
+			else
+				return false;
 		}
 		else
 		{
 			boolean byCost = true;
 			for(String k : oth.getCost().keySet())
 				if(w.getUsableRes(k) < oth.getCost().get(k))
-				byCost = false;
+				{
+					byCost = false;
+					System.out.println("HAS: " + w.getUsableRes(k));
+					System.out.println("NEEDS: " + oth.getCost().get(k));
+				}
 			if(byCost)
+			{
 				return true;
+			}
 		}
-		if(w.hasStructure(oth.getFree()))
-			return true;
+		String[] frees = oth.getFree().split(" ");
+		for(String k : frees)
+			if(w.hasStructure(k))
+				return true;
 		
 		return false;
+	}
+	public ArrayList<String> missingRes(Card oth)
+	{
+		ArrayList<String> temp = new ArrayList<>();
+		for(String k : oth.getCost().keySet())
+		{
+			if(!k.equals("coin") && w.getUsableRes(k) < oth.getCost().get(k))
+				for(int i = 0; i < oth.getCost().get(k) - w.getUsableRes(k); i++)
+					temp.add(k);
+		}
+		return temp;
+	}
+	public ArrayList<String> missingRes()
+	{
+		ArrayList<String> temp = new ArrayList<>();
+		String[] arr;
+		int stage = getWonderAmt();
+		if(stage == 1)
+			arr = w.getCost1().split(" ");
+		else if(stage == 2)
+			arr = w.getCost2().split(" ");
+		else if(stage == 3)
+			arr = w.getCost3().split(" ");
+		else
+			return temp;
+		String res = arr[0];
+		int amt = arr.length;
+		for(int i = 0; i < amt - w.getTradableAmt(res); i++)
+			temp.add(res);
+		return temp;
 	}
 	public boolean activatable()
 	{
@@ -295,7 +387,7 @@ public class Player
 			return false;
 		String res = arr[0];
 		int amt = arr.length;
-		if(w.getUsableRes(res) >= amt)
+		if(w.getTradableAmt(res) >= amt)
 			return true;
 		return false;
 	}
@@ -313,4 +405,20 @@ public class Player
 		temp += "M 5: " + points.get(5) + "\n";
 		return temp;
 	}
+	public void setScore(int score)
+	{
+		this.score = score;
+	}
+	public int getScore()
+	{
+		return score;
+	}
+	public int compareTo(Object arg) 
+	{
+		Player oth = (Player) arg;
+		if(score == oth.score)
+			return oth.coins - coins ;
+		return oth.score - score;
+	}
+	
 }
