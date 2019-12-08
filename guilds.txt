@@ -1,10 +1,10 @@
-3|purple|workersguild|both brown v|ore ore clay stone wood|-|-|-
-3|purple|craftmensguild|both silver v v|ore ore stone stone|-|-|-
-3|purple|tradersguild|both gold v|loom papyrus glass|-|-|-
-3|purple|philosophersguild|both green v|clay clay clay loom papyrus|-|-|-
-3|purple|spyguild|both red v|clay clay clay glass|-|-|-
-3|purple|strategyguild|both -1 v|ore ore stone loom|-|-|-
-3|purple|shipownersguild|self brown/silver/purple v|wood wood wood papyrus glass|-|-|-
-3|purple|scientistsguild|sci1/sci2/sci3|wood wood ore ore papyrus|-|-|-
-3|purple|magistratesguild|both blue v|wood wood wood stone loom|-|-|-
-3|purple|buildersguild|all wonder v|stone stone clay clay glass|-|-|-
+3,purple,workersguild,both brown v,ore ore clay stone wood,-,-,-
+3,purple,craftsmensguild,both silver v v,ore ore stone stone,-,-,-
+3,purple,tradersguild,both gold v,loom papyrus glass,-,-,-
+3,purple,philosophersguild,both green v,clay clay clay loom papyrus,-,-,-
+3,purple,spiesguild,both red v,clay clay clay glass,-,-,-
+3,purple,strategistsguild,both -1 v,ore ore stone loom,-,-,-
+3,purple,shipownersguild,self brown/silver/purple v,wood wood wood papyrus glass,-,-,-
+3,purple,scientistsguild,sci1/sci2/sci3,wood wood ore ore papyrus,-,-,-
+3,purple,magistratesguild,both blue v,wood wood wood stone loom,-,-,-
+3,purple,buildersguild,all wonder v,stone stone clay clay glass,-,-,-
